@@ -89,10 +89,6 @@ class InboundResource extends Resource
                     ->trueIcon('heroicon-o-check-circle')
                     ->falseIcon('heroicon-o-x-circle'),
 
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->label('آخرین بروزرسانی')
-                    ->dateTime('Y/m/d H:i')
-                    ->sortable(),
             ])
             ->filters([
                 //

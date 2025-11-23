@@ -4,6 +4,7 @@ namespace App\Filament\Widgets;
 
 use App\Models\Order;
 use Filament\Widgets\ChartWidget;
+use Morilog\Jalali\Jalalian;
 
 class OrdersChart extends ChartWidget
 {
@@ -17,7 +18,7 @@ class OrdersChart extends ChartWidget
 
         for ($i = 30; $i >= 0; $i--) {
             $date = now()->subDays($i)->toDateString();
-            $labels[] = $date;
+            $labels[] = Jalalian::fromDateTime($date)->format('Y/m/d');;
 
             $count = Order::whereDate('updated_at', $date)->where('status', 'paid')->count();
 

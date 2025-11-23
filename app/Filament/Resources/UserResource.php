@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\DB;
+use Morilog\Jalali\Jalalian;
 
 class UserResource extends Resource
 {
@@ -68,7 +69,9 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('name')->label('نام')->searchable(),
                 Tables\Columns\TextColumn::make('email')->label('ایمیل')->searchable(),
                 Tables\Columns\IconColumn::make('is_admin')->label('ادمین')->boolean()->icon('heroicon-o-users')->searchable(),
-                Tables\Columns\TextColumn::make('created_at')->label('تاریخ ثبت‌نام')->dateTime('Y-m-d')->sortable(),
+                Tables\Columns\TextColumn::make('created_at')->label('تاریخ ثبت‌نام')->dateTime('Y-m-d')->sortable()->formatStateUsing(function ($state) {
+                    return Jalalian::fromDateTime($state)->format('Y/m/d');
+                }),
             ])
             ->filters([
                 //

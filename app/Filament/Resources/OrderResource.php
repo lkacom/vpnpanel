@@ -12,6 +12,7 @@ use App\Models\Setting;
 use App\Models\Transaction;
 use App\Models\Notification as UserNotification;
 use App\Services\MarzbanService;
+use Morilog\Jalali\Jalalian;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 use App\Services\XUIService;
@@ -37,7 +38,7 @@ class OrderResource extends Resource
     protected static ?string $navigationLabel = 'سفارشات';
     protected static ?string $modelLabel = 'سفارش';
     protected static ?string $pluralModelLabel = 'سفارشات';
-    protected static ?string $navigationGroup = 'مدیریت محصولات ';
+    protected static ?string $navigationGroup = 'مدیریت محصولات';
 
     public static function form(Form $form): Form
     {
@@ -96,8 +97,12 @@ class OrderResource extends Resource
 
                 IconColumn::make('source')->label('منبع')->icon(fn (?string $state): string => match ($state) { 'web' => 'heroicon-o-globe-alt', 'telegram' => 'heroicon-o-paper-airplane', default => 'heroicon-o-question-mark-circle' })->color(fn (?string $state): string => match ($state) { 'web' => 'primary', 'telegram' => 'info', default => 'gray' }),
                 Tables\Columns\TextColumn::make('status')->label('وضعیت')->toggleable()->badge()->color(fn (string $state): string => match ($state) { 'pending' => 'warning', 'paid' => 'success', 'expired' => 'danger', default => 'gray' })->formatStateUsing(fn (string $state): string => match ($state) { 'pending' => 'در انتظار پرداخت', 'paid' => 'پرداخت شده', 'expired' => 'منقضی شده', default => $state }),
-                Tables\Columns\TextColumn::make('created_at')->label('تاریخ سفارش')->toggleable()->dateTime('Y-m-d')->sortable(),
-                Tables\Columns\TextColumn::make('expires_at')->label('تاریخ انقضا')->toggleable()->dateTime('Y-m-d')->sortable(),
+                Tables\Columns\TextColumn::make('created_at')->label('تاریخ سفارش')->toggleable()->dateTime('Y-m-d')->sortable()->formatStateUsing(function ($state) {
+                    return Jalalian::fromDateTime($state)->format('Y/m/d');
+                }),
+                Tables\Columns\TextColumn::make('expires_at')->label('تاریخ انقضا')->toggleable()->dateTime('Y-m-d')->sortable()->formatStateUsing(function ($state) {
+                    return Jalalian::fromDateTime($state)->format('Y/m/d');
+                }),
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([

@@ -27,6 +27,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Morilog\Jalali\Jalalian;
 use Telegram\Bot\Laravel\Facades\Telegram;
 
 class PaymentsResource extends Resource
@@ -38,7 +39,7 @@ class PaymentsResource extends Resource
     protected static ?string $navigationLabel = 'تاریخچه تراکنش ها';
     protected static ?string $modelLabel = 'تراکنش';
     protected static ?string $pluralModelLabel = ' تراکنش های مالی';
-    protected static ?string $navigationGroup = 'تنظیمات';
+    protected static ?string $navigationGroup = 'مدیریت محصولات';
 
     public static function form(Form $form): Form
     {
@@ -63,7 +64,9 @@ class PaymentsResource extends Resource
                     ->disabled(),
 
 
-                Forms\Components\TextInput::make('updated_at')->label('تاریخ'),
+                Forms\Components\TextInput::make('updated_at')->label('تاریخ')->formatStateUsing(function ($state) {
+                    return Jalalian::fromDateTime($state)->format('Y/m/d');
+                }),
                 Forms\Components\Textarea::make('description')->label('توضیحات'),
 
 
@@ -87,7 +90,9 @@ class PaymentsResource extends Resource
                         'purchase' => 'خرید',
                         default => $record->type,
                     }),
-                Tables\Columns\TextColumn::make('updated_at')->label('تاریخ')->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('updated_at')->label('تاریخ')->searchable()->sortable()->formatStateUsing(function ($state) {
+                    return Jalalian::fromDateTime($state)->format('Y/m/d');
+                }),
                 Tables\Columns\TextColumn::make('description')->label('توضیحات')->searchable()->sortable(),
             ])
             ->defaultSort('created_at', 'desc')
