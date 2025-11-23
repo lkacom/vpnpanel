@@ -7,6 +7,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.3",
+        "ext-zip": "*",
         "doctrine/dbal": "^4.3",
         "filament/filament": "^3.2",
         "guzzlehttp/guzzle": "^7.10",
@@ -14,8 +15,7 @@
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
         "nwidart/laravel-modules": "*",
-        "simplesoftwareio/simple-qrcode": "^4.2",
-        "ext-zip": "*"
+        "simplesoftwareio/simple-qrcode": "^4.2"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

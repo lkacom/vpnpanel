@@ -110,6 +110,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/payment/card/{order}/submit', [OrderController::class, 'submitCardReceipt'])->name('payment.card.submit');
     Route::post('/payment/card/{order}', [OrderController::class, 'processCardPayment'])->name('payment.card.process');
+    Route::get('/payment/card/{order}', [OrderController::class, 'processCardPayment'])->name('payment.card.process');
 
     Route::post('/payment/crypto/{order}', [OrderController::class, 'processCryptoPayment'])->name('payment.crypto.process');
     Route::post('/payment/wallet/{order}', [OrderController::class, 'processWalletPayment'])->name('payment.wallet.process');

@@ -124,7 +124,8 @@ class InboundResource extends Resource
                                     ->body('پنل فعال X-UI نیست!')
                                     ->danger()
                                     ->send();
-                                return;
+                                return null;
+
                             }
 
                             $xui = new XUIService(
@@ -139,7 +140,7 @@ class InboundResource extends Resource
                                     ->body('اطلاعات ورود به پنل نادرست است.')
                                     ->danger()
                                     ->send();
-                                return;
+                                return null;
                             }
 
                             $inbounds = $xui->getInbounds();
@@ -150,7 +151,7 @@ class InboundResource extends Resource
                                     ->body('اینباندها دریافت نشدند یا خطایی در ارتباط با پنل رخ داده است.')
                                     ->warning()
                                     ->send();
-                                return;
+                                return null;
                             }
 
                             $synced = 0;
@@ -188,9 +189,12 @@ class InboundResource extends Resource
                                 ->body('خطایی در Sync رخ داد: ' . $e->getMessage())
                                 ->danger()
                                 ->send();
+                            return null;
                         }
+
                     }),
             ]);
+
     }
 
     public static function getRelations(): array
@@ -203,7 +207,6 @@ class InboundResource extends Resource
         return [
             'index' => Pages\ListInbounds::route('/'),
 //          'create' => Pages\CreateInbound::route('/create'),
-            'edit' => Pages\EditInbound::route('/{record}/edit'),
         ];
     }
 }

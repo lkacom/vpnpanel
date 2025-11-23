@@ -7,7 +7,7 @@ use Filament\Widgets\ChartWidget;
 
 class OrdersChart extends ChartWidget
 {
-    protected static ?string $heading = 'گزارش سفارشات 30 روز گذشته';
+    protected static ?string $heading = 'سفارشات فعال شده 30 روز اخیر';
     protected int|string|array $columnSpan = 12;
     protected static ?int $sort = 2;
     protected function getData(): array
@@ -19,7 +19,7 @@ class OrdersChart extends ChartWidget
             $date = now()->subDays($i)->toDateString();
             $labels[] = $date;
 
-            $count = Order::whereDate('created_at', $date)->count();
+            $count = Order::whereDate('updated_at', $date)->count();
             $data[] = $count;
         }
 

@@ -3,8 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\PlanResource\Pages;
-use App\Filament\Resources\PlanResource\RelationManagers;
-use Filament\Resources\RelationManagers\RelationManager;
 use App\Models\Plan;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -80,7 +78,7 @@ class PlanResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')->label('نام پلن'),
+                Tables\Columns\TextColumn::make('name')->label('نام پکیج'),
                 Tables\Columns\TextColumn::make('price')
                     ->label('قیمت کل')
                     ->formatStateUsing(fn ($record) =>
@@ -90,12 +88,12 @@ class PlanResource extends Resource
                 Tables\Columns\BooleanColumn::make('is_popular')->label('محبوب'),
                 Tables\Columns\BooleanColumn::make('is_active')->label('فعال'),
                 Tables\Columns\TextColumn::make('duration_days')
-                    ->label('مدت زمان')
+                    ->label('مدت اعتبار')
                     ->formatStateUsing(fn ($state, $record) => $record->duration_label)
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('monthly_price')
-                    ->label('قیمت ماهانه')
+                    ->label('قیمت ')
                     ->formatStateUsing(fn ($record) => number_format($record->monthly_price) . ' تومان')
                     ->sortable(),
 
@@ -129,7 +127,6 @@ class PlanResource extends Resource
         return [
             'index' => Pages\ListPlans::route('/'),
             'create' => Pages\CreatePlan::route('/create'),
-            'edit' => Pages\EditPlan::route('/{record}/edit'),
         ];
     }
 }

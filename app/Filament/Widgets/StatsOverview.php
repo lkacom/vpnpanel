@@ -2,6 +2,8 @@
 
 namespace App\Filament\Widgets;
 
+use BaconQrCode\Renderer\Color\Rgb;
+use Filament\Support\Colors\Color;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use App\Models\Order;
@@ -63,7 +65,7 @@ class StatsOverview extends BaseWidget
             Stat::make('درآمد ماه جاری', number_format($currentMonthRevenue) . ' تومان')
                 ->description('فروش ماه جاری')
                 ->descriptionIcon('heroicon-m-calendar-days')
-                ->color('danger'),
+                ->color(Color::Lime),
 
             Stat::make('تعداد کل کاربران', $totalUsers)
                 ->description('تعداد کل کاربران')
@@ -73,7 +75,7 @@ class StatsOverview extends BaseWidget
             Stat::make('تعداد سفارشات', $totalPaidOrders)
                 ->description($latestOrderDescription)
                 ->descriptionIcon('heroicon-m-shopping-cart')
-                ->color('info'),
+                ->color(Color::Purple),
         ];
     }
 }

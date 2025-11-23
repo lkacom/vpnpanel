@@ -52,7 +52,7 @@ class UserResource extends Resource
                     ->required(fn (string $context): bool => $context === 'create')
                     ->maxLength(255),
                 Forms\Components\Toggle::make('is_admin')
-                    ->label('کاربر ادمین است؟'),
+                    ->label('دسترسی کامل مدیریت'),
             ]);
     }
 
@@ -218,7 +218,6 @@ class UserResource extends Resource
         return [
             'index' => Pages\ListUsers::route('/'),
             'create' => Pages\CreateUser::route('/create'),
-            'edit' => Pages\EditUser::route('/{record}/edit'),
 
         ];
     }
