@@ -28,6 +28,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Telegram\Bot\Laravel\Facades\Telegram;
+use Filament\Forms\Components\FileUpload;
 
 class OrderResource extends Resource
 {
@@ -52,14 +53,47 @@ class OrderResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->description('با کلیک روی هر رکورد میتوانید آن را ویرایش کنید.')
             ->columns([
-                ImageColumn::make('card_payment_receipt')->label('رسید')->disk('public')->toggleable()->size(60)->circular()->url(fn (Order $record): ?string => $record->card_payment_receipt ? Storage::disk('public')->url($record->card_payment_receipt) : null)->openUrlInNewTab(),
+                ImageColumn::make('card_payment_receipt')->label('رسید')->disk('public')->toggleable()->size(60)->url(fn (Order $record): ?string => $record->card_payment_receipt ? Storage::disk('public')->url($record->card_payment_receipt) : null)->openUrlInNewTab(),
                 Tables\Columns\TextColumn::make('user.name')->label('کاربر')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('plan.name')->label(' عنوان')->default(fn (Order $record): string => $record->plan_id ? $record->plan->name : "شارژ کیف پول")->description(function (Order $record): string {
                     if ($record->renews_order_id) return " (تمدید سفارش #" . $record->renews_order_id . ")";
-                    if (!$record->plan_id) return number_format($record->amount) . ' تومان';
                     return '';
                 })->color(fn(Order $record) => $record->renews_order_id ? 'primary' : 'gray'),
+
+                Tables\Columns\TextColumn::make('final_price')
+                    ->label('مبلغ')
+                    ->getStateUsing(function (Order $record) {
+
+                        // 1) اگر شارژ کیف پول است → مبلغ در orders.amount
+                        if (is_null($record->plan_id)) {
+                            return number_format($record->amount) . ' تومان';
+                        }
+
+                        // 2) اگر خرید سرویس است، ولی هنوز پرداخت نشده → مبلغ ندارد
+                        // پس باید مبلغ پلن را نمایش دهیم
+                        if ($record->status === 'pending') {
+                            return $record->plan
+                                ? number_format($record->plan->price) . ' تومان'
+                                : '—';
+                        }
+
+                        // 3) اگر خرید سرویس paid است → مبلغ در transactions.amount ذخیره شده
+                        $transaction = \App\Models\Transaction::where('order_id', $record->id)->first();
+
+                        return $transaction
+                            ? number_format($transaction->amount) . ' تومان'
+                            : (
+                                // اگر تراکنش پیدا نشد ولی سفارش paid است
+                            $record->plan
+                                ? number_format($record->plan->price) . ' تومان'
+                                : '—'
+                            );
+                    })
+                    ->sortable()
+                    ->searchable(),
+
                 IconColumn::make('source')->label('منبع')->icon(fn (?string $state): string => match ($state) { 'web' => 'heroicon-o-globe-alt', 'telegram' => 'heroicon-o-paper-airplane', default => 'heroicon-o-question-mark-circle' })->color(fn (?string $state): string => match ($state) { 'web' => 'primary', 'telegram' => 'info', default => 'gray' }),
                 Tables\Columns\TextColumn::make('status')->label('وضعیت')->badge()->color(fn (string $state): string => match ($state) { 'pending' => 'warning', 'paid' => 'success', 'expired' => 'danger', default => 'gray' })->formatStateUsing(fn (string $state): string => match ($state) { 'pending' => 'در انتظار پرداخت', 'paid' => 'پرداخت شده', 'expired' => 'منقضی شده', default => $state }),
                 Tables\Columns\TextColumn::make('created_at')->label('تاریخ سفارش')->dateTime('Y-m-d')->sortable(),
@@ -270,12 +304,16 @@ class OrderResource extends Resource
 
 
             ])
+            ->actions([
+                Tables\Actions\DeleteAction::make(),
+            ])
             ->bulkActions([Tables\Actions\BulkActionGroup::make([Tables\Actions\DeleteBulkAction::make()])]);
     }
 
     public static function getRelations(): array { return []; }
     public static function getPages(): array { return ['index' => Pages\ListOrders::route('/'),
         'create' => Pages\CreateOrder::route('/create'),
+
 
 
 
