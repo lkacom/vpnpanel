@@ -56,8 +56,8 @@ class OrderResource extends Resource
             ->description('با کلیک روی هر رکورد میتوانید آن را ویرایش کنید.')
             ->columns([
                 ImageColumn::make('card_payment_receipt')->label('رسید')->disk('public')->toggleable()->size(60)->url(fn (Order $record): ?string => $record->card_payment_receipt ? Storage::disk('public')->url($record->card_payment_receipt) : null)->openUrlInNewTab(),
-                Tables\Columns\TextColumn::make('user.name')->label('کاربر')->searchable()->sortable(),
-                Tables\Columns\TextColumn::make('plan.name')->label(' عنوان')->default(fn (Order $record): string => $record->plan_id ? $record->plan->name : "شارژ کیف پول")->description(function (Order $record): string {
+                Tables\Columns\TextColumn::make('user.name')->label('کاربر')->searchable()->sortable()->toggleable(),
+                Tables\Columns\TextColumn::make('plan.name')->label(' عنوان')->toggleable()->default(fn (Order $record): string => $record->plan_id ? $record->plan->name : "شارژ کیف پول")->description(function (Order $record): string {
                     if ($record->renews_order_id) return " (تمدید سفارش #" . $record->renews_order_id . ")";
                     return '';
                 })->color(fn(Order $record) => $record->renews_order_id ? 'primary' : 'gray'),
@@ -95,9 +95,9 @@ class OrderResource extends Resource
                     ->searchable(),
 
                 IconColumn::make('source')->label('منبع')->icon(fn (?string $state): string => match ($state) { 'web' => 'heroicon-o-globe-alt', 'telegram' => 'heroicon-o-paper-airplane', default => 'heroicon-o-question-mark-circle' })->color(fn (?string $state): string => match ($state) { 'web' => 'primary', 'telegram' => 'info', default => 'gray' }),
-                Tables\Columns\TextColumn::make('status')->label('وضعیت')->badge()->color(fn (string $state): string => match ($state) { 'pending' => 'warning', 'paid' => 'success', 'expired' => 'danger', default => 'gray' })->formatStateUsing(fn (string $state): string => match ($state) { 'pending' => 'در انتظار پرداخت', 'paid' => 'پرداخت شده', 'expired' => 'منقضی شده', default => $state }),
-                Tables\Columns\TextColumn::make('created_at')->label('تاریخ سفارش')->dateTime('Y-m-d')->sortable(),
-                Tables\Columns\TextColumn::make('expires_at')->label('تاریخ انقضا')->dateTime('Y-m-d')->sortable(),
+                Tables\Columns\TextColumn::make('status')->label('وضعیت')->toggleable()->badge()->color(fn (string $state): string => match ($state) { 'pending' => 'warning', 'paid' => 'success', 'expired' => 'danger', default => 'gray' })->formatStateUsing(fn (string $state): string => match ($state) { 'pending' => 'در انتظار پرداخت', 'paid' => 'پرداخت شده', 'expired' => 'منقضی شده', default => $state }),
+                Tables\Columns\TextColumn::make('created_at')->label('تاریخ سفارش')->toggleable()->dateTime('Y-m-d')->sortable(),
+                Tables\Columns\TextColumn::make('expires_at')->label('تاریخ انقضا')->toggleable()->dateTime('Y-m-d')->sortable(),
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([

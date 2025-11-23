@@ -35,9 +35,9 @@ class PaymentsResource extends Resource
 
 
     protected static ?string $navigationIcon = 'heroicon-o-currency-dollar';
-    protected static ?string $navigationLabel = 'تراکنش ها';
+    protected static ?string $navigationLabel = 'تاریخچه تراکنش ها';
     protected static ?string $modelLabel = 'تراکنش';
-    protected static ?string $pluralModelLabel = 'تاریخچه تراکنش ها';
+    protected static ?string $pluralModelLabel = ' تراکنش های مالی';
     protected static ?string $navigationGroup = 'تنظیمات';
 
     public static function form(Form $form): Form
@@ -73,7 +73,7 @@ class PaymentsResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->description('تاریخچه تراکنشهای مالی')
+            ->description('تراکنشهای مالی شامل کلیه پرداخت های خرید و افزایش اعتبار کاربران می باشد.')
             ->columns([
                 Tables\Columns\TextColumn::make('order_id')->label('شناسه')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('user.name')->label('کاربر')->searchable()->sortable(),
@@ -95,6 +95,7 @@ class PaymentsResource extends Resource
                 Tables\Filters\SelectFilter::make('type')->label('نوع تراکنش')->options(['purchase' => 'خرید', 'deposit' => 'افزایش اعتبار']),
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
             ]);
 
     }
