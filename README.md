@@ -3,7 +3,7 @@
   <img src="https://raw.githubusercontent.com/arvinvahed/VPNMarket/main/github/github/logo.png" width="350" alt="VPNMarket Logo">
 </p>
 
-<h1 align="center">VPNMarket - پنل مدیریت جامع و هوشمند مرزبان و X-UI</h1>
+<h1 align="center">VPanel - پنل مدیریت هوشمند فروش V2Ray </h1>
 
 <p align="center">
   <strong>یک ابزار قدرتمند، رایگان و متن-باز برای مدیریت، فروش و کسب درآمد از سرویس‌های VPN مبتنی بر پنل‌های Marzban و Sanaei (X-UI)</strong>

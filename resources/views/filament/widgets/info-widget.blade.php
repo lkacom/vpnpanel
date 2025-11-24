@@ -55,7 +55,7 @@
                     rel="noopener noreferrer"
                     target="_blank"
                 >
-                    پشتیبانی و انجمن ایرانلی
+                     پشتیبانی
                 </x-filament::link>
 
 
