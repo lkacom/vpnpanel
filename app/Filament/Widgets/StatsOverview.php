@@ -4,6 +4,7 @@ namespace App\Filament\Widgets;
 
 use BaconQrCode\Renderer\Color\Rgb;
 use Filament\Support\Colors\Color;
+use Filament\Support\Enums\IconPosition;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use App\Models\Order;
@@ -58,22 +59,25 @@ class StatsOverview extends BaseWidget
         return [
             Stat::make('درآمد کل', number_format($totalRevenue) . ' تومان')
                 ->description('مجموع فروش ')
-                ->descriptionIcon('heroicon-m-arrow-trending-up')
+                ->descriptionIcon('heroicon-m-arrow-trending-up',IconPosition::Before)
                 ->color('success'),
 
             Stat::make('درآمد ماه جاری', number_format($currentMonthRevenue) . ' تومان')
                 ->description('فروش ماه جاری')
-                ->descriptionIcon('heroicon-m-calendar-days')
+                ->descriptionIcon('heroicon-m-calendar-days',IconPosition::Before)
+                ->extraAttributes([
+                    'class' => 'bg-black text-white', // پس‌زمینه مشکی و متن سفید
+                ])
                 ->color(Color::Lime),
 
             Stat::make('سفارشات معلق', $totalUsers)
                 ->description('سفارشات غیرفعال')
-                ->descriptionIcon('heroicon-m-x-circle')
+                ->descriptionIcon('heroicon-m-x-circle',IconPosition::Before)
                 ->color('warning'),
 
             Stat::make('سفارشات موفق', $totalPaidOrders)
                 ->description('مجموع سفارشات تحویلی')
-                ->descriptionIcon('heroicon-m-shield-check')
+                ->descriptionIcon('heroicon-m-shield-check',IconPosition::Before)
                 ->color(Color::Purple),
         ];
     }
