@@ -7,6 +7,7 @@ use App\Filament\Resources\OrderResource\Pages;
 use App\Models\Inbound;
 use App\Models\Order;
 use Filament\Forms\Components\TextInput;
+use Filament\Support\Enums\MaxWidth;
 use Illuminate\Support\Str;
 use App\Models\Setting;
 use App\Models\Transaction;
@@ -42,10 +43,11 @@ class OrderResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('user_id')->relationship('user', 'name')->label('کاربر')->disabled(),
+                Forms\Components\Select::make('user_id')->inlineLabel()->relationship('user', 'name')->label('کاربر')->disabled(),
                 TextInput::make('plan_name') // نام فیلد دلخواه برای نمایش
                 ->label('عنوان')
                     ->disabled()
+                    ->inlineLabel()
                     ->afterStateHydrated(function ($component, $state, $record) {
                         // بررسی plan_id واقعی از رکورد
                         $planId = $record->plan_id ?? null;
@@ -60,6 +62,7 @@ class OrderResource extends Resource
                 Forms\Components\TextInput::make('created_at')
                     ->label('تاریخ سفارش')
                     ->disabled()
+                    ->inlineLabel()
                     ->afterStateHydrated(function ($component, $state) {
                         if (is_null($state)) {
                             $component->state('غیرفعال'); // اگر NULL باشد
@@ -72,6 +75,7 @@ class OrderResource extends Resource
                 Forms\Components\TextInput::make('expires_at')
                     ->label('تاریخ انقضاء')
                     ->disabled()
+                    ->inlineLabel()
                     ->afterStateHydrated(function ($component, $state) {
                         if (is_null($state)) {
                             $component->state('غیرفعال'); // اگر NULL باشد
@@ -81,8 +85,8 @@ class OrderResource extends Resource
                         }
                     }),
 
-                Forms\Components\Select::make('status')->label('وضعیت سفارش')->options(['pending' => 'در انتظار پرداخت', 'paid' => 'پرداخت شده', 'expired' => 'منقضی شده'])->required(),
-                Forms\Components\Textarea::make('config_details')->label('اطلاعات کانفیگ سرویس')->rows(10),
+                Forms\Components\Select::make('status')->inlineLabel()->label('وضعیت سفارش')->options(['pending' => 'در انتظار پرداخت', 'paid' => 'پرداخت شده', 'expired' => 'منقضی شده'])->required(),
+                Forms\Components\Textarea::make('config_details')->inlineLabel()->label('اطلاعات کانفیگ سرویس')->rows(10),
             ]);
     }
 

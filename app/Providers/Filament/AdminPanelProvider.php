@@ -4,6 +4,7 @@
 namespace App\Providers\Filament;
 use App\Filament\Widgets\VpnMarketInfoWidget;
 use Filament\Navigation\NavigationGroup;
+use Filament\Support\Enums\MaxWidth;
 use Filament\Widgets\AccountWidget;
 use Filament\FontProviders\LocalFontProvider;
 use Filament\Http\Middleware\Authenticate;
@@ -36,7 +37,7 @@ class AdminPanelProvider extends PanelProvider
             ->darkMode()
             ->topNavigation()
             ->brandLogo('/images/logo.png')
-            ->brandLogoHeight('3rem')
+            ->brandLogoHeight('4rem')
             ->favicon(asset('favicon.png'))
             ->colors([
                 'primary' => Color::Red,

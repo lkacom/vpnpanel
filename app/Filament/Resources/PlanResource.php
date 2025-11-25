@@ -30,17 +30,17 @@ class PlanResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->label('نام سرویس')
+                    ->inlineLabel()
                     ->required(),
                 Forms\Components\TextInput::make('price')
                     ->label('قیمت')
                     ->numeric()
+                    ->inlineLabel()
                     ->required(),
-//                Forms\Components\TextInput::make('currency')
-//                    ->label('واحد پول')
-//                    ->default('تومان/ماهانه'),
                 Forms\Components\Textarea::make('features')
                     ->label('ویژگی‌ها')
                     ->required()
+                    ->inlineLabel()
                     ->helperText('هر ویژگی را در یک خط جدید بنویسید.'),
 
 
@@ -48,6 +48,7 @@ class PlanResource extends Resource
                     ->label('حجم (GB)')
                     ->numeric()
                     ->required()
+                    ->inlineLabel()
                     ->default(30)
                     ->helperText('حجم سرویس را به گیگابایت وارد کنید.'),
 
@@ -59,15 +60,18 @@ class PlanResource extends Resource
                         365 => '۳۶۵ روز (۱ ساله)',
                     ])
                     ->required()
+                    ->inlineLabel()
                     ->default(30)
                     ->native(false) ,
         //========================================================
 
                 Forms\Components\Toggle::make('is_popular')
                     ->label('پلن محبوب است؟')
+                    ->inlineLabel()
                     ->helperText('این پلن به صورت ویژه نمایش داده خواهد شد.'),
                 Forms\Components\Toggle::make('is_active')
                     ->label('فعال')
+                    ->inlineLabel()
                     ->default(true),
 
 

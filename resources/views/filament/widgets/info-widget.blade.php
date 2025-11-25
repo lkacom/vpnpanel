@@ -1,16 +1,15 @@
 <x-filament-widgets::widget class="fi-filament-info-widget">
     <x-filament::section>
-        <div class="flex items-center gap-x-3">
+        <div class="flex items-center gap-x-3 rtl:divide-x-reverse">
             <div class="flex-1">
 
                 <a
                     href="https://github.com/lkacom/vpnpanel"
                     rel="noopener noreferrer"
                     target="_blank"
-                    class="block text-xl font-bold text-gray-950 dark:text-white"
+                    class="block text-xl font-bold text-gray-950 dark:text-white rtl:divide-x-reverse"
                 >
-
-                    Vpanel سامانه مدیریت و فروش
+                     پنل مدیریت و فروش VPanel
                 </a>
 
 
