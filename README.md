@@ -18,8 +18,9 @@
 **VPanel** یک **فورک از VPNMarket** است که امکانات و تجربه کاربری آن را به سطحی مدرن و حرفه‌ای ارتقا داده است. اگر از پنل‌های سنتی و پیچیده خسته شده‌اید، VPanel با طراحی زیبا، نصب ساده و قابلیت‌های فروش خودکار، انتخاب شماست.
 
 </p>
+<h2 dir="rtl">
 ## ✨ نمایی از محیط پنل
-
+</h2>
 <p align="center">
   <img src="https://raw.githubusercontent.com/lkacom/vpanel/main/github/github/panel1.PNG" width="45%" alt="داشبورد اصلی">
   <img src="https://raw.githubusercontent.com/lkacom/vpanel/main/github/github/panel2.PNG" width="45%" alt="مدیریت کاربران">
