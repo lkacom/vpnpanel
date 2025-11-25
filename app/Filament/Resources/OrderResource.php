@@ -114,7 +114,7 @@ class OrderResource extends Resource
             ])
             ->actions([
 
-                Action::make('approve')->label('تایید و اجرا')->icon('heroicon-o-check-circle')->color('success')->requiresConfirmation()->modalHeading('تایید پرداخت سفارش')->modalDescription('آیا از تایید این پرداخت اطمینان دارید؟')->visible(fn (Order $order): bool => $order->status === 'pending')
+                Action::make('approve')->label('تایید و اجرا')->icon('heroicon-o-check-circle')->color('success')->requiresConfirmation()->modalHeading('تایید پرداخت سفارش')->modalDescription('آیا از تایید این پرداخت اطمینان دارید؟')->button()->visible(fn (Order $order): bool => $order->status === 'pending')
                     ->action(function (Order $order) {
                         DB::transaction(function () use ($order) {
                             $settings = Setting::all()->pluck('value', 'key');
@@ -301,8 +301,9 @@ class OrderResource extends Resource
                             }
                         });
                     }),
-                Tables\Actions\DeleteAction::make(),
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()->button()->label('')->tooltip('ویرایش'),
+                Tables\Actions\DeleteAction::make()->button()->label('')->tooltip('حذف'),
+
 
 
 
