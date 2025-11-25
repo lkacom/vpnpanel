@@ -1,7 +1,7 @@
 <p align="center">
   <img src="https://raw.githubusercontent.com/lkacom/vpanel/main/github/github/logo.png" width="250" alt="VPanel Logo">
 </p>
-<h1  dir="rtl">پنل مدیریت و فروش VPN
+<h1  align="center" dir="rtl">پنل مدیریت و فروش VPN
 </h1>
 <p align="center">
   <strong>یک ابزار متن‌باز، رایگان و مدرن برای مدیریت، فروش و کسب درآمد از سرویس‌های VPN</strong>
