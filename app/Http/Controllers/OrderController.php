@@ -204,15 +204,14 @@ class OrderController extends Controller
                         throw new \Exception('تمدید خودکار برای پنل سنایی هنوز پیاده‌سازی نشده است.');
                     }
                     $xuiService = new XUIService($settings->get('xui_host'), $settings->get('xui_user'), $settings->get('xui_pass'));
-                    $inbound = Inbound::find($settings->get('xui_default_inbound_id'));
-                    if (!$inbound || !$inbound->inbound_data) {
+                    $inbound = Inbound::where('inbound_id','=',$settings->get('xui_default_inbound_id'))->first();                    if (!$inbound || !$inbound->inbound_data) {
                         throw new \Exception('لطفا" با پشتیبانی تماس بگیرید');
                     }
                     if (!$xuiService->login()) {
                         throw new \Exception('خطا در اتصال به پنل X-UI.');
                     }
 
-                    $inboundData = json_decode($inbound->inbound_data, true);
+                    $inboundData = $inbound->inbound_data;
                     $clientData = ['email' => $uniqueUsername, 'total' => $plan->volume_gb * 1073741824, 'expiryTime' => $newExpiresAt->timestamp * 1000];
                     $response = $xuiService->addClient($inboundData['id'], $clientData);
 

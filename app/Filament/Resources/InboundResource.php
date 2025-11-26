@@ -163,6 +163,7 @@ class InboundResource extends Resource
                                 } else {
                                     Inbound::create([
                                         'title' => $inbound['remark'] ?? "Inbound {$inbound['id']}",
+                                        'inbound_id'    => $inbound['id'],
                                         'inbound_data' => $inbound
                                     ]);
                                 }
