@@ -206,10 +206,10 @@ class OrderController extends Controller
                     $xuiService = new XUIService($settings->get('xui_host'), $settings->get('xui_user'), $settings->get('xui_pass'));
                     $inbound = Inbound::find($settings->get('xui_default_inbound_id'));
                     if (!$inbound || !$inbound->inbound_data) {
-                        throw new \Exception('اطلاعات اینباند پیش‌فرض برای X-UI یافت نشد.');
+                        throw new \Exception('لطفا" با پشتیبانی تماس بگیرید');
                     }
                     if (!$xuiService->login()) {
-                        throw new \Exception('خطا در لاگین به پنل X-UI.');
+                        throw new \Exception('خطا در اتصال به پنل X-UI.');
                     }
 
                     $inboundData = json_decode($inbound->inbound_data, true);

@@ -8,6 +8,9 @@ use App\Models\Inbound;
 use App\Models\Order;
 use Filament\Forms\Components\TextInput;
 use Filament\Support\Enums\MaxWidth;
+use Filament\Tables\Columns\Layout\Split;
+use Filament\Tables\Columns\Layout\Stack;
+use Filament\Tables\Columns\TextColumn;
 use Illuminate\Support\Str;
 use App\Models\Setting;
 use App\Models\Transaction;
@@ -59,6 +62,11 @@ class OrderResource extends Resource
                             $component->state($record->plan?->name ?? '');
                         }
                     }),
+                Forms\Components\TextInput::make('final_price')
+                    ->label('منبع')
+                    ->disabled()
+                    ->inlineLabel(),
+
                 Forms\Components\TextInput::make('created_at')
                     ->label('تاریخ سفارش')
                     ->disabled()
@@ -94,15 +102,54 @@ class OrderResource extends Resource
     {
         return $table
             ->columns([
-                ImageColumn::make('card_payment_receipt')->label('رسید')->disk('public')->toggleable()->size(60)->circular()->url(fn (Order $record): ?string => $record->card_payment_receipt ? Storage::disk('public')->url($record->card_payment_receipt) : null)->openUrlInNewTab(),
+                IconColumn::make('source')->label('منبع')->toggleable()->icon(fn (?string $state): string => match ($state) { 'web' => 'heroicon-o-globe-alt', 'telegram' => 'heroicon-o-paper-airplane', default => 'heroicon-o-question-mark-circle' })->color(fn (?string $state): string => match ($state) { 'web' => 'primary', 'telegram' => 'info', default => 'gray' }),
+
+                ImageColumn::make('card_payment_receipt')->label('رسید')->disk('public')->toggleable()->size(60)->url(fn (Order $record): ?string => $record->card_payment_receipt ? Storage::disk('public')->url($record->card_payment_receipt) : null)->openUrlInNewTab(),
                 Tables\Columns\TextColumn::make('user.name')->label('کاربر')->searchable()->sortable(),
                 Tables\Columns\TextColumn::make('plan.name')->label('عنوان')->default(fn (Order $record): string => $record->plan_id ? $record->plan->name : "شارژ کیف پول")->description(function (Order $record): string {
                     if ($record->renews_order_id) return " (تمدید سفارش #" . $record->renews_order_id . ")";
-                    if (!$record->plan_id) return number_format($record->amount) . ' تومان';
                     return '';
                 })->color(fn(Order $record) => $record->renews_order_id ? 'primary' : 'gray'),
-                IconColumn::make('source')->label('منبع')->toggleable()->icon(fn (?string $state): string => match ($state) { 'web' => 'heroicon-o-globe-alt', 'telegram' => 'heroicon-o-paper-airplane', default => 'heroicon-o-question-mark-circle' })->color(fn (?string $state): string => match ($state) { 'web' => 'primary', 'telegram' => 'info', default => 'gray' }),
-                Tables\Columns\TextColumn::make('status')->label('وضعیت')->badge()->color(fn (string $state): string => match ($state) { 'pending' => 'warning', 'paid' => 'success', 'expired' => 'danger', default => 'gray' })->formatStateUsing(fn (string $state): string => match ($state) { 'pending' => 'در انتظار پرداخت', 'paid' => 'پرداخت شده', 'expired' => 'منقضی شده', default => $state }),
+                Tables\Columns\TextColumn::make('final_price')
+                    ->label('مبلغ')
+                    ->getStateUsing(function (Order $record) {
+
+                        // ✳ 1) اگر شارژ کیف پول است → مبلغ در orders.amount
+                        if (is_null($record->plan_id)) {
+                            return number_format($record->amount) . ' تومان';
+                        }
+
+                        // ✳ 2) اگر سفارش pending است و مبلغ در orders نیست → از قیمت پلن نمایش بده
+                        if ($record->status === 'pending') {
+                            return $record->plan
+                                ? number_format($record->plan->price) . ' تومان'
+                                : '—';
+                        }
+
+                        $transaction = \App\Models\Transaction::where('order_id', $record->id)->first();
+
+                        return $transaction
+                            ? number_format($transaction->amount) . ' تومان'
+                            : ($record->plan ? number_format($record->plan->price) . ' تومان' : '—');
+                    })
+                    ->sortable()
+                    ->searchable(),
+
+                Tables\Columns\TextColumn::make('payment_method')
+                    ->label('روش پرداخت')
+                    ->badge()
+                    ->formatStateUsing(fn ($state) => match ($state) {
+                        'wallet' => 'کیف پول',
+                        'card'   => 'کارت',
+                        'crypto' => 'ارز دیجیتال',
+                        default  => 'نامشخص',
+                    })
+                    ->color(fn (string $state): string => match ($state) {
+                        'wallet' => 'success',
+                        'card' => 'warning',
+                        'crypto' => 'info',
+                        default => 'gray'
+                    }),
                 Tables\Columns\TextColumn::make('created_at')->label('تاریخ سفارش')->toggleable()->dateTime('Y-m-d')->sortable()->formatStateUsing(function ($state) {
                     return Jalalian::fromDateTime($state)->format('Y/m/d');
                 }),
@@ -110,7 +157,10 @@ class OrderResource extends Resource
 //                    return Jalalian::fromDateTime($state)->format('Y/m/d');
 //
 //                }),
+                Tables\Columns\TextColumn::make('status')->label('وضعیت')->badge()->color(fn (string $state): string => match ($state) { 'pending' => 'warning', 'paid' => 'success', 'failed' => 'danger', default => 'gray' })->formatStateUsing(fn (string $state): string => match ($state) { 'pending' => 'در انتظار پرداخت', 'paid' => 'پرداخت شده', 'expired' => 'منقضی شده','failed' => 'خطا ', default => $state }),
+
             ])
+
             ->defaultSort('created_at', 'desc')
             ->filters([
                 Tables\Filters\SelectFilter::make('status')->label('وضعیت')->options(['pending' => 'در انتظار پرداخت', 'paid' => 'پرداخت شده', 'expired' => 'منقضی شده']),

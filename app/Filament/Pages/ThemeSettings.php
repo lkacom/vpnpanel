@@ -39,15 +39,6 @@ class ThemeSettings extends Page implements HasForms
         $settings = Setting::all()->pluck('value', 'key')->toArray();
 
 
-        foreach ($settings as $key => $value) {
-            if ($value === '') {
-                $settings[$key] = null;
-            }
-            if ($key === 'xui_default_inbound_id' && $value !== null) {
-                $settings[$key] = (string) $value;
-            }
-        }
-
         $this->form->fill(array_merge([
             'panel_type' => 'marzban',
             'xui_host' => null,
