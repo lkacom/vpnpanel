@@ -76,7 +76,7 @@ class VpnSettings extends Page implements HasForms
                     ]),
 
                 // Step 2:
-                Wizard\Step::make('مرحله بعد')
+                Wizard\Step::make('همگام سازی')
                     ->schema([
                         Section::make('تنظیمات پنل مرزبان')
                             ->visible(fn(Get $get) => $get('panel_type') === 'marzban')

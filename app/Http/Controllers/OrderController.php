@@ -238,7 +238,7 @@ class OrderController extends Controller
                             $success = true;
                         }
                     } else {
-                        throw new \Exception('خطا در ساخت کاربر در پنل سنایی: ' . ($response['msg'] ?? 'پاسخ نامعتبر'));
+                        throw new \Exception('خطا در ساخت کاربر در پنل X-UI: ' . ($response['msg'] ?? 'پاسخ نامعتبر'));
                     }
                 }
 
