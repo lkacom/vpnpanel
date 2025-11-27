@@ -4,10 +4,8 @@
         {{ $this->form }}
 
 
-        <div class="mt-6">
-            <x-filament::button type="submit">
-                ذخیره تغییرات
-            </x-filament::button>
+        <div class="mt-5" >
+
         </div>
     </form>
 </x-filament-panels::page>
