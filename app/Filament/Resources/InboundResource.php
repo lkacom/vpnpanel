@@ -65,8 +65,8 @@ class InboundResource extends Resource
             ->description('اطلاعات این صفحه به صورت خودکار از سرور X-UI دریافت خواهد شد.')
             ->columns([
                 Tables\Columns\TextColumn::make('title')
-                    ->label('عنوان')
-                    ->searchable(),
+                    ->label('عنوان'),
+
 
                 Tables\Columns\TextColumn::make('panel_id')
                     ->label('ID در پنل')
@@ -74,8 +74,8 @@ class InboundResource extends Resource
                     ->color('success'),
 
                 Tables\Columns\TextColumn::make('remark')
-                    ->label('Remark')
-                    ->searchable(),
+                    ->label('Remark'),
+
 
                 Tables\Columns\TextColumn::make('inbound_data.protocol')
                     ->label('پروتکل')
@@ -102,9 +102,13 @@ class InboundResource extends Resource
             ->heading(function () {
                 $value = \App\Models\Setting::where('key', 'xui_default_inbound_id')->value('value');
 
-                return 'ID ورودی(Inbound) پیش فرض: ' . ($value ?? 'انتخاب نشده');
-            })
+                if (is_null($value) || $value === '') {
+                    return 'ID ورودی(Inbound) پیش فرض: ' . 'به منوی تنظیمات به بخش "راه اندازی اولیه پنل" مراجعه کنید';
+                }
 
+                // در غیر این صورت مقدار واقعی را نمایش بده
+                return 'ID ورودی(Inbound) پیش فرض: ' . $value;
+            })
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
