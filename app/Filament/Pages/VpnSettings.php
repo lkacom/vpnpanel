@@ -150,7 +150,7 @@ class VpnSettings extends Page implements HasForms
                             ->preload()
                             ->allowHtml()
                             ->placeholder('یک اینباند انتخاب کنید')
-                            ->helperText('این لیست در صورت صحت مشخصات پنل در مرحله قبل به صورت خودکار لیست می‌شود.')
+                            ->helperText('در صورتی که این لیست خالی باشد اطلاعات ورود به پنل در مرحله قبل صحیح نیست.')
                             ->required(fn (Get $get) => $get('panel_type') === 'xui'),
                     ]),
 
@@ -215,7 +215,7 @@ class VpnSettings extends Page implements HasForms
                             ->send();
                         return;
                     }
-
+                    Inbound::truncate();
                     foreach ($formData as $key => $value) {
                         Setting::updateOrCreate(['key' => $key], ['value' => $value ?? '']);
                     }
