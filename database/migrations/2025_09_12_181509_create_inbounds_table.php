@@ -11,6 +11,7 @@ return new class extends Migration
         Schema::create('inbounds', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->json('inbound_data');
             $table->integer('inbound_id')->nullable();
             $table->timestamps();
         });
