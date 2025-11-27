@@ -6,7 +6,9 @@ use App\Events\OrderPaid;
 use App\Filament\Resources\OrderResource\Pages;
 use App\Models\Inbound;
 use App\Models\Order;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\ViewField;
 use Filament\Support\Enums\MaxWidth;
 use Filament\Tables\Columns\Layout\Split;
 use Filament\Tables\Columns\Layout\Stack;
@@ -17,6 +19,7 @@ use App\Models\Transaction;
 use App\Models\Notification as UserNotification;
 use App\Services\MarzbanService;
 use Morilog\Jalali\Jalalian;
+use Nette\Utils\FileInfo;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Services\XUIService;
 use Filament\Forms;
@@ -95,7 +98,11 @@ class OrderResource extends Resource
 
                 Forms\Components\Select::make('status')->inlineLabel()->label('وضعیت سفارش')->options(['pending' => 'در انتظار پرداخت', 'paid' => 'پرداخت شده', 'expired' => 'منقضی شده'])->required(),
                 Forms\Components\Textarea::make('config_details')->inlineLabel()->label('اطلاعات کانفیگ سرویس')->rows(10),
+
+
+
             ]);
+
     }
 
     public static function table(Table $table): Table
