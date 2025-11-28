@@ -103,7 +103,7 @@ class InboundResource extends Resource
                 $value = \App\Models\Setting::where('key', 'xui_default_inbound_id')->value('value');
 
                 if (is_null($value) || $value === '') {
-                    return 'ID ورودی پیش فرض پنل: ' . 'به منوی تنظیمات به بخش "راه اندازی اولیه پنل" مراجعه کنید';
+                    return 'ابتدا به منوی تنظیمات به بخش "راه اندازی اولیه پنل" مراجعه کنید';
                 }
 
                 // در غیر این صورت مقدار واقعی را نمایش بده
