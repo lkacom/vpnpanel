@@ -149,7 +149,7 @@ class VpnSettings extends Page implements HasForms
                             ->preload()
                             ->allowHtml()
                             ->placeholder('یک اینباند انتخاب کنید')
-                            ->helperText('در صورتی که این لیست خالی باشد اطلاعات ورود به پنل در مرحله قبل صحیح نمیباشد یا در سرور خود ورودی تعریف نکرده اید.')
+                            ->helperText('در صورتی که این لیست خالی باشد اطلاعات ورود تنظیمات پنل در مرحله قبل صحیح نمی باشد.')
                     ]),
 
             ])->statePath('data')
