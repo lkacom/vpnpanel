@@ -88,7 +88,6 @@ sudo systemctl enable --now php${PHP_VERSION}-fpm nginx mysql redis-server super
 # === فایروال ===
 sudo ufw allow 'OpenSSH'
 sudo ufw allow 'Nginx Full'
-echo "y" | sudo ufw enable
 
 # === دانلود پروژه ===
 echo -e "${YELLOW}⬇️ دانلود سورس ...${NC}"
