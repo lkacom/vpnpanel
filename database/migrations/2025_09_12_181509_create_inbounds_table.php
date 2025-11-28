@@ -12,7 +12,6 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->json('inbound_data');
-            $table->integer('inbound_id')->nullable();
             $table->timestamps();
         });
     }
