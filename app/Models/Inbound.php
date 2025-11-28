@@ -10,7 +10,6 @@ class Inbound extends Model
     protected $fillable = [
         'inbound_data',
         'title',
-        'inbound_id',
     ];
 
 
