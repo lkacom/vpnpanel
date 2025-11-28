@@ -66,6 +66,7 @@ class VpnSettings extends Page implements HasForms
 
                 /* مرحله ۱ — انتخاب پنل */
                 Wizard\Step::make('انتخاب نوع پنل')
+
                     ->schema([
                         Radio::make('panel_type')
                             ->label('نوع پنل')
