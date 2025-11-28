@@ -19,7 +19,7 @@ PROJECT_PATH="/var/www/vpanel"
 GITHUB_REPO="https://github.com/lkacom/vpanel.git"
 PHP_VERSION="8.3"
 
-echo -e "${CYAN}--- شروع نصب اسکریپت VPanel ---${NC}"
+echo -e "${CYAN}## شروع نصب اسکریپت VPanel ##${NC}"
 echo
 
 # === دریافت اطلاعات از کاربر ===
@@ -115,10 +115,8 @@ sudo sed -i "s|QUEUE_CONNECTION=.*|QUEUE_CONNECTION=redis|" .env
 # === نصب وابستگی‌ها ===
 echo -e "${YELLOW}🧰 نصب پکیج‌های Composer ...${NC}"
 sudo -u www-data composer install --no-dev --optimize-autoloader
-# === نصب پکیج Jalali ===
-print_warning "نصب پکیج برای تقویم فارسی..."
 sudo -u www-data composer require morilog/jalali
-print_success "پکیج تاریخ شمسی نصب شد"
+
 # --- شروع بخش اصلاح شده برای NPM ---
 echo -e "${YELLOW}📦 نصب پکیج‌های Node.js ...${NC}"
 # پاکسازی فایل‌های قدیمی
